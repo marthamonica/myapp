@@ -1,0 +1,28 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+#GET     /                           controllers.Application.index
+#GET         /                    controllers.Application.sum
+#GET         /tesdb               controllers.Application.dbtes
+#GET         /tesins              controllers.Application.insert
+GET         /showUser                controllers.Application.selUser
+
+#POST        /sayHello            controllers.Application.sayHello
+POST        /newUser                 controllers.Application.newUser
+POST        /newWebRec               controllers.Application.newWeb
+POST        /newCallRec              controllers.Application.newCall
+POST        /newSMSRec               controllers.Application.newSMS
+POST        /showCallData            controllers.Application.showCallData
+POST        /showSMSData             controllers.Application.showSMSData
+POST        /showWebData             controllers.Application.showWebData
+POST        /checkAlert              controllers.Application.checkAlert
+POST        /getBlockedNumber        controllers.Application.getBlockedNumber
+POST        /updateUser              controllers.Application.updateUser
+
+#POST        /tes                 controllers.Application.tes
+
+# Map static resources from the /public folder to the /assets URL path
+GET         /assets/*file            controllers.Assets.at(path="/public", file)
+
