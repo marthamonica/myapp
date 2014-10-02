@@ -88,7 +88,7 @@ object Application extends Controller {
           val conn = DB.getConnection()
           try {
             val stmt = conn.createStatement
-            val rs = stmt.executeQuery("SELECT * FROM user WHERE client_phone = "+id+" and phone_number = "+number)
+            val rs = stmt.executeQuery("SELECT * FROM user WHERE android_id = "+id+" and phone_number = "+number)
 
             while (rs.next()) {
               count+=1
@@ -111,10 +111,7 @@ object Application extends Controller {
           else{
             Ok("duplicate")
           }
-
         }
-
-
       }.recoverTotal{
         e => BadRequest("Detected error:"+ JsError.toFlatJson(e))
       }
