@@ -84,16 +84,37 @@ object Application extends Controller {
         ).tupled
         json.validate[(String, String)].map{
         case (id, number) => {
-          val a: Option[Long] = DB.withConnection { implicit c =>
-            SQL("insert into user (android_id, phone_number,email,number) values ({and_id}, {numb},{email},{number})")
-              .on("and_id" -> id,
-                "numb" -> number,
-                "email" -> "",
-                "number" -> "")
-              .executeInsert()
+          var count:Int=0;
+          val conn = DB.getConnection()
+          try {
+            val stmt = conn.createStatement
+            val rs = stmt.executeQuery("SELECT * FROM user WHERE client_phone = "+id+" and phone_number = "+number)
+
+            while (rs.next()) {
+              count+=1
+            }
+          } finally {
+            conn.close()
           }
-          Ok("oke")
+
+          if (count<1) {
+            val a: Option[Long] = DB.withConnection { implicit c =>
+              SQL("insert into user (android_id, phone_number,email,number) values ({and_id}, {numb},{email},{number})")
+                .on("and_id" -> id,
+                  "numb" -> number,
+                  "email" -> "",
+                  "number" -> "")
+                .executeInsert()
+            }
+            Ok("oke")
+          }
+          else{
+            Ok("duplicate")
+          }
+
         }
+
+
       }.recoverTotal{
         e => BadRequest("Detected error:"+ JsError.toFlatJson(e))
       }
